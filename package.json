@@ -1,0 +1,12 @@
+{
+  "name": "elas-personalizados",
+  "version": "1.0.0",
+  "description": "Catálogo Ela's Personalizados",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
