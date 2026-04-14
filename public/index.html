@@ -60,12 +60,20 @@
         .product-cta,.product-customize{display:inline-block;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:500;font-size:.85rem;transition:all .3s;cursor:pointer;border:none;font-family:'Poppins',sans-serif}
         .product-cta{border:2px solid var(--rosa-pastel);color:var(--rosa-pastel);background:transparent}
         .product-cta:hover{background:linear-gradient(135deg,var(--rosa-pastel),var(--laranja-pastel));color:var(--branco);border-color:transparent}
+        .product-price{font-size:1.25rem;font-weight:700;color:#2e7d32;margin-bottom:10px;display:block}
         .product-customize{background:linear-gradient(135deg,var(--rosa-pastel),var(--laranja-pastel));color:var(--branco);box-shadow:0 3px 10px rgba(242,181,194,.3)}
         .product-customize:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(242,181,194,.5)}
 
         /* MODAL */
         /* Anti-print/screenshot protection for previews */
-        @media print{.modal-overlay,.preview-area{display:none!important}}
+        @media print{.modal-overlay,.preview-area,.wpp-float{display:none!important}}
+        .wpp-float{position:fixed;bottom:25px;right:25px;z-index:900;display:flex;align-items:center;gap:10px;cursor:pointer;transition:transform .3s}
+        .wpp-float:hover{transform:scale(1.08)}
+        .wpp-float-btn{width:60px;height:60px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(37,211,102,.4);transition:box-shadow .3s}
+        .wpp-float:hover .wpp-float-btn{box-shadow:0 6px 25px rgba(37,211,102,.6)}
+        .wpp-float-btn svg{width:32px;height:32px;fill:#fff}
+        .wpp-float-label{background:#fff;padding:8px 14px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1);font-size:.8rem;font-weight:600;color:#333;white-space:nowrap;opacity:0;transform:translateX(10px);transition:all .3s;pointer-events:none}
+        .wpp-float:hover .wpp-float-label{opacity:1;transform:translateX(0)}
         .preview-protected{position:relative;-webkit-user-select:none;user-select:none}
         .preview-protected.blurred>*:not(.shield-overlay){filter:blur(30px)!important;transition:filter .1s}
         .shield-overlay{position:absolute;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.95);border-radius:15px;flex-direction:column;gap:10px}
@@ -184,17 +192,22 @@
         .size-slider{width:100%;accent-color:var(--rosa-pastel)}
 
         /* GALLERY */
+        /* GALLERY CAROUSEL */
         .gallery{padding:80px 20px;background:var(--branco)}
-        .gallery-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
-        .gallery-item{border-radius:15px;overflow:hidden;aspect-ratio:1;cursor:pointer;position:relative;transition:transform .3s}
-        .gallery-item:hover{transform:scale(1.03)}
-        .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+        .gallery-grid-wrap{max-width:1200px;margin:0 auto;padding:0 15px}
+        .gallery-track{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:15px}
+        .gallery-item{height:220px;border-radius:15px;overflow:hidden;cursor:pointer;position:relative}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;pointer-events:none}
         .gallery-item:hover img{transform:scale(1.08)}
         .gallery-empty{text-align:center;padding:40px;color:var(--texto-medio);font-style:italic;grid-column:1/-1}
-        .gallery-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1100;cursor:pointer;padding:20px}
+        .gallery-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1100;padding:20px}
         .gallery-lightbox.active{display:flex}
         .gallery-lightbox img{max-width:90%;max-height:90vh;border-radius:15px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
         .gallery-lightbox .lb-close{position:absolute;top:20px;right:25px;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none}
+        .gallery-lightbox .lb-prev,.gallery-lightbox .lb-next{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);color:#fff;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s}
+        .gallery-lightbox .lb-prev:hover,.gallery-lightbox .lb-next:hover{background:rgba(255,255,255,.35)}
+        .gallery-lightbox .lb-prev{left:20px}
+        .gallery-lightbox .lb-next{right:20px}
 
         /* SECTIONS */
         .seasonal{padding:80px 20px;background:linear-gradient(135deg,var(--laranja-suave),var(--rosa-suave))}
@@ -272,7 +285,9 @@
             .about-stats{flex-direction:column;gap:20px}
             .logo-text{font-size:1.3rem}
             .shape-options{grid-template-columns:repeat(2,1fr)}
-            .gallery-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+            .gallery-grid-wrap{padding:0 10px}
+            .gallery-track{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+            .gallery-item{height:160px}
             .contact-grid{grid-template-columns:1fr!important}
             .seasonal{padding:50px 15px}
             .about{padding:50px 15px}
@@ -328,42 +343,57 @@
     <section class="products" id="produtos">
         <div class="section-title"><h2>Nosso Catálogo</h2><div class="divider"></div><p>Conheça nossos produtos feitos especialmente para você</p></div>
         <div class="products-grid">
+            <!-- DATAS COMEMORATIVAS -->
             <div class="product-card">
-                <div class="product-image"><div class="product-icon">🎈</div><span class="product-badge">Destaque</span></div>
+                <div class="product-image"><div class="product-icon">🎈</div><span class="product-badge">Datas Comemorativas</span></div>
                 <div class="product-info">
                     <h3>Balão Bubble</h3>
                     <p>Balões bubble personalizados com texto exclusivo. Disponíveis com balões dentro, encapsulado completo, meio termo ou com coração.</p>
                     <div class="product-features"><span class="feature-tag">Personalizado</span><span class="feature-tag">Festas</span><span class="feature-tag">Decoração</span></div>
                     <div class="product-buttons">
                         <button class="product-customize" onclick="openBubble()">Personalizar</button>
-                        <a href="https://wa.me/5519999264075?text=Olá! Gostaria de saber mais sobre o Balão Bubble." class="product-cta" target="_blank">Orçamento</a>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre o Balão Bubble." class="product-cta" target="_blank">Orçamento</a>
                     </div>
                 </div>
             </div>
             <div class="product-card">
-                <div class="product-image"><div class="product-icon">🎂</div><span class="product-badge">Popular</span></div>
+                <div class="product-image"><div class="product-icon">🎂</div><span class="product-badge">Datas Comemorativas</span></div>
                 <div class="product-info">
-                    <h3>Topo de Bolo</h3>
-                    <p>Topos de bolo em 2D ou 3D com camadas coloridas e opção de acabamento dourado ou prateado. Design exclusivo para sua festa.</p>
+                    <h3>Topo de Bolo (Nome & Idade)</h3>
+                    <p>Topos de bolo em 2D ou 3D com nome e idade. Camadas coloridas com acabamento dourado ou prateado. Design exclusivo para sua festa.</p>
                     <div class="product-features"><span class="feature-tag">2D / 3D</span><span class="feature-tag">Dourado</span><span class="feature-tag">Prateado</span></div>
                     <div class="product-buttons">
                         <button class="product-customize" onclick="openTopo()">Personalizar</button>
-                        <a href="https://wa.me/5519999264075?text=Olá! Gostaria de saber mais sobre o Topo de Bolo." class="product-cta" target="_blank">Orçamento</a>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre o Topo de Bolo (Nome e Idade)." class="product-cta" target="_blank">Orçamento</a>
                     </div>
                 </div>
             </div>
             <div class="product-card">
-                <div class="product-image"><div class="product-icon">✨</div><span class="product-badge">Vinil</span></div>
+                <div class="product-image"><div class="product-icon">🎉</div><span class="product-badge">Datas Comemorativas</span></div>
                 <div class="product-info">
-                    <h3>Adesivos Personalizados em Vinil</h3>
-                    <p>Adesivos em vinil resistente à água. Envie sua logo e escolha o formato: redondo, quadrado, retangular, coração ou estrela.</p>
-                    <div class="product-features"><span class="feature-tag">Vinil</span><span class="feature-tag">À prova d'água</span><span class="feature-tag">Vários formatos</span></div>
+                    <h3>Topo de Bolo (Personagem/Mesversário)</h3>
+                    <p>Topos de bolo com personagem ou tema de mesversário. Envie a imagem do personagem desejado e personalize com nome e idade.</p>
+                    <div class="product-features"><span class="feature-tag">Personagem</span><span class="feature-tag">Mesversário</span><span class="feature-tag">Com imagem</span></div>
                     <div class="product-buttons">
-                        <button class="product-customize" onclick="openAdesivo()">Personalizar</button>
-                        <a href="https://wa.me/5519999264075?text=Olá! Gostaria de saber mais sobre os Adesivos em Vinil." class="product-cta" target="_blank">Orçamento</a>
+                        <button class="product-customize" onclick="openTopoPersonagem()">Personalizar</button>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre o Topo de Bolo com Personagem/Mesversário." class="product-cta" target="_blank">Orçamento</a>
                     </div>
                 </div>
             </div>
+            <!-- ADESIVOS -->
+            <div class="product-card">
+                <div class="product-image"><div class="product-icon">✨</div><span class="product-badge">Adesivos</span></div>
+                <div class="product-info">
+                    <h3>Tags Personalizadas Diversas</h3>
+                    <p>Tags personalizadas em diversos formatos e materiais. Envie sua logo e escolha o formato: redondo, quadrado, retangular, coração ou estrela.</p>
+                    <div class="product-features"><span class="feature-tag">Personalizado</span><span class="feature-tag">Vários formatos</span><span class="feature-tag">Com logo</span></div>
+                    <div class="product-buttons">
+                        <button class="product-customize" onclick="openAdesivo()">Personalizar</button>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre as Tags Personalizadas." class="product-cta" target="_blank">Orçamento</a>
+                    </div>
+                </div>
+            </div>
+            <!-- FORMATURA -->
             <div class="product-card">
                 <div class="product-image"><div class="product-icon">🎓</div><span class="product-badge">Formatura</span></div>
                 <div class="product-info">
@@ -372,18 +402,55 @@
                     <div class="product-features"><span class="feature-tag">Redonda</span><span class="feature-tag">Com foto</span><span class="feature-tag">Formatura</span></div>
                     <div class="product-buttons">
                         <button class="product-customize" onclick="openTag()">Personalizar</button>
-                        <a href="https://wa.me/5519999264075?text=Olá! Gostaria de saber mais sobre as Tags para Formatura." class="product-cta" target="_blank">Orçamento</a>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre as Tags para Formatura." class="product-cta" target="_blank">Orçamento</a>
                     </div>
                 </div>
             </div>
             <div class="product-card">
-                <div class="product-image"><div class="product-icon">🎁</div><span class="product-badge">Festas</span></div>
+                <div class="product-image"><div class="product-icon">😄</div><span class="product-badge">Formatura</span></div>
+                <div class="product-info">
+                    <h3>Cabeção de Formatura</h3>
+                    <p>Cabeção personalizado para formatura! Envie sua foto e receba um cabeção divertido com seu rosto. Adicione óculos, chapéu ou outros acessórios.</p>
+                    <div class="product-features"><span class="feature-tag">Formatura</span><span class="feature-tag">Personalizado</span><span class="feature-tag">Com foto</span></div>
+                    <div class="product-buttons">
+                        <button class="product-customize" onclick="openCabecao()">Personalizar</button>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre o Cabeção de Formatura." class="product-cta" target="_blank">Orçamento</a>
+                    </div>
+                </div>
+            </div>
+            <!-- EVENTOS -->
+            <div class="product-card">
+                <div class="product-image"><div class="product-icon">🔢</div><span class="product-badge">Eventos</span></div>
+                <div class="product-info">
+                    <h3>Número de Mesa</h3>
+                    <p>Números de mesa personalizados para festas e eventos. Escolha a sequência desejada e receba uma arte exclusiva criada por nossas profissionais.</p>
+                    <div class="product-features"><span class="feature-tag">Arte exclusiva</span><span class="feature-tag">Personalizado</span><span class="feature-tag">Eventos</span></div>
+                    <div class="product-buttons">
+                        <button class="product-customize" onclick="openNumeroMesa()">Personalizar</button>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de saber mais sobre Número de Mesa personalizado." class="product-cta" target="_blank">Orçamento</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-image"><div class="product-icon">🧴</div><span class="product-badge">Eventos</span></div>
+                <div class="product-info">
+                    <h3>Kit Toalete</h3>
+                    <p>Kit toalete personalizado para festas e eventos. Arte exclusiva criada por nossas profissionais com o tema da sua celebração.</p>
+                    <div class="product-features"><span class="feature-tag">Arte exclusiva</span><span class="feature-tag">Profissional</span><span class="feature-tag">Eventos</span></div>
+                    <div class="product-buttons">
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de criar uma arte exclusiva para Kit Toalete. Podem me ajudar?" class="product-customize" target="_blank" style="text-decoration:none;">Criar Arte com Profissional</a>
+                    </div>
+                </div>
+            </div>
+            <!-- ANIVERSÁRIO -->
+            <div class="product-card">
+                <div class="product-image"><div class="product-icon">🎁</div><span class="product-badge">Aniversário</span></div>
                 <div class="product-info">
                     <h3>Lembrancinha para Festa</h3>
                     <p>Lembrancinhas com arte exclusiva criada por nossas profissionais. Entre em contato para desenvolvermos o design perfeito para seu evento.</p>
                     <div class="product-features"><span class="feature-tag">Arte exclusiva</span><span class="feature-tag">Profissional</span><span class="feature-tag">Eventos</span></div>
                     <div class="product-buttons">
-                        <a href="https://wa.me/5519999264075?text=Olá! Gostaria de criar uma arte exclusiva para lembrancinha de festa. Podem me ajudar?" class="product-customize" target="_blank" style="text-decoration:none;">Criar Arte com Profissional</a>
+                        <a href="https://wa.me/5519993797497?text=Olá! Gostaria de criar uma arte exclusiva para lembrancinha de festa. Podem me ajudar?" class="product-customize" target="_blank" style="text-decoration:none;">Criar Arte com Profissional</a>
                     </div>
                 </div>
             </div>
@@ -398,19 +465,23 @@
     <!-- GALLERY -->
     <section class="gallery" id="nossos-trabalhos">
         <div class="section-title"><h2>Nossos Trabalhos</h2><div class="divider"></div><p>Veja alguns dos produtos que já fizemos com carinho</p></div>
-        <div class="gallery-grid" id="galleryGrid"></div>
+        <div class="gallery-grid-wrap">
+            <div class="gallery-track" id="galleryTrack"></div>
+        </div>
     </section>
 
     <!-- LIGHTBOX -->
-    <div class="gallery-lightbox" id="lightbox" onclick="closeLightbox()">
-        <button class="lb-close">✕</button>
+    <div class="gallery-lightbox" id="lightbox" onclick="closeLightbox(event)">
+        <button class="lb-close" onclick="closeLightbox(event)">✕</button>
+        <button class="lb-prev" onclick="lbNav(-1,event)">&#10094;</button>
         <img id="lightboxImg" src="" alt="Foto ampliada">
+        <button class="lb-next" onclick="lbNav(1,event)">&#10095;</button>
     </div>
 
     <section class="about" id="sobre">
         <div class="about-content">
             <div class="section-title"><h2>Sobre Nós</h2><div class="divider"></div></div>
-            <p>A <strong>Ela's Personalizados</strong> é um sonho realizado por <strong>Isabela</strong> e <strong>Daniela</strong>, mãe e filha unidas pela paixão de criar peças únicas e especiais. A ideia de montar uma loja de personalizados sempre esteve presente na vida das duas, mas por muito tempo ficou apenas no papel. Conforme o tempo passava, elas só viam mais oportunidades surgindo e a vontade de iniciar nessa área só crescia, até que decidiram transformar esse sonho em realidade.</p>
+            <p>A <strong>Ela's Personalizados</strong> é um sonho realizado por <strong>Daniela</strong> e <strong>Isabela</strong>, mãe e filha unidas pela paixão de criar peças únicas e especiais. A ideia de montar uma loja de personalizados sempre esteve presente na vida das duas, mas por muito tempo ficou apenas no papel. Conforme o tempo passava, elas só viam mais oportunidades surgindo e a vontade de iniciar nessa área só crescia, até que decidiram transformar esse sonho em realidade.</p>
             <p>Trabalhamos com materiais de alta qualidade e atenção aos detalhes, garantindo que cada item personalizado supere suas expectativas.</p>
             <p class="about-tagline">Ela's Personalizados: Feito por elas, para encantar você!</p>
             <div class="about-stats">
@@ -435,9 +506,9 @@
         <div class="contact-container">
             <div class="section-title"><h2>Fale Conosco</h2><div class="divider"></div><p>Entre em contato para fazer seu orçamento</p></div>
             <div class="contact-methods">
-                <a href="https://wa.me/5519999264075?text=Olá! Vim pelo site e gostaria de saber mais sobre os produtos da Ela's Personalizados." target="_blank" class="contact-item">
+                <a href="https://wa.me/5519993797497?text=Olá! Vim pelo site e gostaria de saber mais sobre os produtos da Ela's Personalizados." target="_blank" class="contact-item">
                     <div class="contact-icon">📱</div>
-                    <div class="contact-text"><strong>WhatsApp</strong><span>(19) 99926-4075</span></div>
+                    <div class="contact-text"><strong>WhatsApp</strong><span>(19) 99379-7497</span></div>
                 </a>
                 <a href="https://instagram.com/elaspersonalizado" target="_blank" class="contact-item">
                     <div class="contact-icon">📷</div>
@@ -453,7 +524,7 @@
         <p>&copy; 2026 Ela's Personalizados. Todos os direitos reservados.</p>
     </footer>
 
-    <a href="https://wa.me/5519999264075?text=Olá! Vim pelo site e gostaria de saber mais sobre os produtos." target="_blank" class="whatsapp-float" title="WhatsApp">💬</a>
+    <a href="https://wa.me/5519993797497?text=Olá! Vim pelo site e gostaria de saber mais sobre os produtos." target="_blank" class="whatsapp-float" title="WhatsApp">💬</a>
 
     <!-- MODAL -->
     <div class="modal-overlay" id="customizerModal">
@@ -466,7 +537,11 @@
                 </div>
                 <div class="customize-controls" id="controlsArea"></div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="align-items:center">
+                <div style="display:flex;align-items:center;gap:8px;margin-right:auto">
+                    <label style="font-size:.8rem;font-weight:600;white-space:nowrap">Quantidade:</label>
+                    <input type="number" id="modalQtd" value="" placeholder="Qtd" min="1" max="999" style="width:60px;padding:6px 8px;border:2px solid #eee;border-radius:10px;text-align:center;font-size:.9rem;font-family:Poppins,sans-serif">
+                </div>
                 <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancelar</button>
                 <button class="modal-btn modal-btn-whatsapp" id="sendBtn" onclick="sendWhatsApp()">📱 Enviar pelo WhatsApp</button>
             </div>
@@ -732,12 +807,68 @@
             '<div class="topo-layer" style="background:'+S.layer1+';height:35px;border-radius:0 0 12px 12px"></div></div></div>');
     }
 
+    // ===== TOPO PERSONAGEM/MESVERSÁRIO =====
+    var tpCores=[{name:'Rosa',color:'#F2B5C2'},{name:'Lilás',color:'#C9A9E0'},{name:'Azul',color:'#A9CBE8'},{name:'Verde',color:'#A8D5BA'},{name:'Amarelo',color:'#F7DC6F'},{name:'Vermelho',color:'#E74C3C'},{name:'Dourado',color:'#D4AF37'},{name:'Preto',color:'#222'}];
+    var tpTemas={
+        'princesa':'👑🏰💖👗✨','princesas':'👑🏰💖👗✨','princess':'👑🏰💖👗✨',
+        'safari':'🦁🐘🦒🌿🐵','safári':'🦁🐘🦒🌿🐵',
+        'fazendinha':'🐄🐔🌻🚜🐷','fazenda':'🐄🐔🌻🚜🐷',
+        'minnie':'🎀🖤❤️⚫🩷','mickey':'⚫🖤❤️🎩✨',
+        'unicórnio':'🦄🌈💜⭐✨','unicornio':'🦄🌈💜⭐✨',
+        'sereia':'🧜‍♀️🐚🌊💎✨','pequena sereia':'🧜‍♀️🐚🌊💎✨',
+        'dinossauro':'🦕🦖🌋🌿🥚','dino':'🦕🦖🌋🌿🥚',
+        'astronauta':'🚀🌙⭐🪐👨‍🚀','espaço':'🚀🌙⭐🪐👨‍🚀',
+        'futebol':'⚽🏆🥅🏟️⭐','fundo do mar':'🐠🐚🌊🐙🦀',
+        'circo':'🎪🤡🎈🎠⭐','jardim':'🌸🦋🌺🌻🐝',
+        'chuva de amor':'☁️💖🌧️💕❤️','chuva de bencao':'☁️✨🌧️💛🙏',
+        'balão':'🎈🎈🎈🎉✨','balões':'🎈🎈🎈🎉✨',
+        'frozen':'❄️⛄💙👸✨','carros':'🏎️🏁🚗⭐🏆',
+        'patrulha canina':'🐾🐶🦴⭐🎖️','cocomelon':'🍉🎶👶🌈⭐',
+        'galinha pintadinha':'🐔💙🎵⭐🌟','ursinho':'🧸💛🎀⭐✨',
+        'borboleta':'🦋🌸💜🌺✨','arco-íris':'🌈☁️⭐💖✨','arco iris':'🌈☁️⭐💖✨'
+    };
+    function getTemaEmojis(tema){
+        if(!tema)return '🎉🎂✨';
+        var t=tema.toLowerCase().trim();
+        for(var k in tpTemas){if(t.indexOf(k)!==-1)return tpTemas[k]}
+        return '🎉🎂✨';
+    }
+    function openTopoPersonagem(){
+        currentModal='topoPersonagem';S.text1='';S.text2='';S.tpTema='';S.tpCor='#F2B5C2';
+        html('controlsArea').innerHTML=
+            '<div class="control-group"><label>Tema</label><input type="text" id="tpTema" placeholder="Ex: Princesas, Safari, Fazendinha, Minnie..." maxlength="40" oninput="S.tpTema=this.value;renderTopoPersonagem()"></div>'+
+            '<div class="control-group"><label>Nome</label><input type="text" id="tpNome" placeholder="Ex: Helena" maxlength="20" oninput="S.text1=this.value;renderTopoPersonagem()"></div>'+
+            '<div class="control-group"><label>Idade / Mês</label><input type="text" id="tpIdade" placeholder="Ex: 1 mês, 2 aninhos" maxlength="15" oninput="S.text2=this.value;renderTopoPersonagem()"></div>'+
+            '<div class="control-group"><label>Cor</label><div class="color-options">'+colorPicker(tpCores,S.tpCor,'setTpCor')+'</div></div>';
+        renderTopoPersonagem();openModal('Topo de Bolo (Personagem/Mesversário)');
+    }
+    function setTpCor(c,n,el){S.tpCor=c;selectColor(el);renderTopoPersonagem()}
+    function renderTopoPersonagem(){
+        var t1=S.text1||'Nome';var t2=S.text2||'';var cor=S.tpCor||'#F2B5C2';
+        var fs=t1.length>12?'1.6rem':'2rem';
+        var emojis=getTemaEmojis(S.tpTema);
+        var stroke='-webkit-text-stroke:5px #FFFFFF;paint-order:stroke fill;';
+        setPreview(
+            '<div class="topo-preview">'+
+            '<div style="text-align:center;padding:10px">'+
+            '<div class="topo-text-content" style="color:'+cor+';font-size:'+fs+';font-family:\'Dancing Script\',cursive;'+stroke+'">'+esc(t1)+'</div>'+
+            (t2?'<div class="topo-text-content" style="color:'+cor+';font-size:1.4rem;font-family:\'Poppins\',sans-serif;font-weight:600;'+stroke+'margin-top:-5px">'+esc(t2)+'</div>':'')+
+            '</div>'+
+            '<div class="topo-stick-el"></div>'+
+            '<div style="text-align:center;font-size:1.5rem;letter-spacing:4px;margin-bottom:-5px;position:relative;z-index:1">'+emojis+'</div>'+
+            '<div class="topo-cake-el">'+
+            '<div class="topo-layer" style="background:'+cor+'"></div>'+
+            '<div class="topo-layer" style="background:#FADCB8"></div>'+
+            '<div class="topo-layer" style="background:'+cor+';height:35px;border-radius:0 0 12px 12px">'+
+            '</div></div></div>');
+    }
+
     // ===== TAG FORMATURA =====
     var tagColors=[{name:'Verde Escuro',color:'#4a6741'},{name:'Preto',color:'#222'},{name:'Azul Marinho',color:'#1a3a5c'},{name:'Vinho',color:'#722F37'},{name:'Rosa',color:'#c2718a'},{name:'Dourado',color:'#8B7535'}];
     var tagTextColors=[{name:'Branco',color:'#FFFFFF',border:true},{name:'Dourado',color:'#D4AF37'},{name:'Preto',color:'#222'}];
     var tagFonts=[{name:'Cursiva',value:'Dancing Script, cursive'},{name:'Elegante',value:'Playfair Display, serif'},{name:'Moderna',value:'Poppins, sans-serif'},{name:'Cl\u00e1ssica',value:'Georgia, serif'}];
     function openTag(){
-        currentModal='tag';S.color=tagColors[0].color;S.textColor='#FFFFFF';S.frase='';S.nome='';S.photoData='';S.photoSize=80;
+        currentModal='tag';S.color=tagColors[0].color;S.textColor='#FFFFFF';S.frase='';S.nome='';S.photoData='';S.photoSize=80;S.tagPosX=0;S.tagPosY=0;
         S.tagFontTop='Poppins, sans-serif';S.tagFontBottom='Dancing Script, cursive';S.tagFsTop=11;S.tagFsBottom=16;
         html('controlsArea').innerHTML=
             '<div class="control-group"><label>Frase curvada (em cima)</label><input type="text" id="tagFrase" placeholder="Ex: UM DOUTOR PARA CHAMAR DE MEU" maxlength="40" oninput="S.frase=this.value;renderTag()"></div>'+
@@ -763,7 +894,8 @@
     function renderTag(){
         var frase=(S.frase||'SUA FRASE AQUI').toUpperCase();
         var nome=S.nome||'Seu Nome';
-        var photo=S.photoData?'<img src="'+S.photoData+'">':'🎓';
+        var tx=S.tagPosX||0,ty=S.tagPosY||0;
+        var photo=S.photoData?'<img id="tagImg" src="'+S.photoData+'" draggable="false" style="width:100%;height:100%;object-fit:cover;transform:translate('+tx+'px,'+ty+'px);cursor:grab;user-select:none">':'🎓';
         var ps=S.photoSize;
         var fraseFontSize=S.tagFsTop||11;
         var nomeFontSize=S.tagFsBottom||16;
@@ -794,13 +926,43 @@
             '</div></div></div>');
     }
 
+    // Drag foto na tag de formatura (estilo Canva)
+    var tagDrag=false,tagStartX=0,tagStartY=0,tagOrigX=0,tagOrigY=0;
+    document.addEventListener('mousedown',function(e){
+        var img=document.getElementById('tagImg');
+        if(!img||currentModal!=='tag')return;
+        if(e.target===img){e.preventDefault();tagDrag=true;tagStartX=e.clientX;tagStartY=e.clientY;tagOrigX=S.tagPosX;tagOrigY=S.tagPosY;img.style.cursor='grabbing'}
+    });
+    document.addEventListener('touchstart',function(e){
+        var img=document.getElementById('tagImg');
+        if(!img||currentModal!=='tag')return;
+        if(e.target===img){tagDrag=true;var t=e.touches[0];tagStartX=t.clientX;tagStartY=t.clientY;tagOrigX=S.tagPosX;tagOrigY=S.tagPosY}
+    },{passive:true});
+    document.addEventListener('mousemove',function(e){
+        if(!tagDrag||currentModal!=='tag')return;
+        S.tagPosX=tagOrigX+(e.clientX-tagStartX);
+        S.tagPosY=tagOrigY+(e.clientY-tagStartY);
+        var img=document.getElementById('tagImg');
+        if(img)img.style.transform='translate('+S.tagPosX+'px,'+S.tagPosY+'px)';
+    });
+    document.addEventListener('touchmove',function(e){
+        if(!tagDrag||currentModal!=='tag')return;
+        var t=e.touches[0];
+        S.tagPosX=tagOrigX+(t.clientX-tagStartX);
+        S.tagPosY=tagOrigY+(t.clientY-tagStartY);
+        var img=document.getElementById('tagImg');
+        if(img)img.style.transform='translate('+S.tagPosX+'px,'+S.tagPosY+'px)';
+    },{passive:true});
+    document.addEventListener('mouseup',function(){if(tagDrag){tagDrag=false;var img=document.getElementById('tagImg');if(img)img.style.cursor='grab'}});
+    document.addEventListener('touchend',function(){tagDrag=false});
+
     // ===== ADESIVO VINIL =====
     var adColors=[{name:'Branco',color:'#F5F5F5',border:true},{name:'Preto',color:'#222'},{name:'Rosa',color:'#F2B5C2'},{name:'Kraft',color:'#C9A96E'},{name:'Transparente',color:'rgba(220,220,220,.4)',border:true},{name:'Dourado',color:'#D4AF37'}];
     var adTextColors=[{name:'Preto',color:'#222'},{name:'Branco',color:'#FFF',border:true},{name:'Dourado',color:'#D4AF37'},{name:'Rosa',color:'#E91E7B'}];
     function openAdesivo(){
-        currentModal='adesivo';S.text1='';S.color='#F5F5F5';S.textColor='#222';S.shape='redondo';S.logoData='';
+        currentModal='adesivo';S.text1='';S.color='#F5F5F5';S.textColor='#222';S.shape='redondo';S.logoData='';S.adObs='';S.adQtd='10';
         html('controlsArea').innerHTML=
-            '<div class="control-group"><label>Texto do adesivo</label><input type="text" id="adText" placeholder="Ex: Nome da marca" maxlength="30" oninput="S.text1=this.value;renderAdesivo()"></div>'+
+            '<div class="control-group"><label>Texto da tag</label><input type="text" id="adText" placeholder="Ex: Nome da marca" maxlength="30" oninput="S.text1=this.value;renderAdesivo()"></div>'+
             '<div class="control-group"><label>Sua logo (opcional)</label><div class="upload-small" id="adUpload"><input type="file" accept="image/*" onchange="handleAdLogo(this)"><div class="upload-icon">🖼️</div><div class="upload-text">Clique ou Ctrl+V para colar</div></div></div>'+
             '<div class="control-group"><label>Formato</label><div class="shape-options">'+
             '<div class="shape-btn selected" onclick="S.shape=\'redondo\';selShape(this);renderAdesivo()"><span class="shape-icon">⬤</span>Redondo</div>'+
@@ -809,8 +971,14 @@
             '<div class="shape-btn" onclick="S.shape=\'coracao\';selShape(this);renderAdesivo()"><span class="shape-icon">❤️</span>Coração</div>'+
             '<div class="shape-btn" onclick="S.shape=\'estrela\';selShape(this);renderAdesivo()"><span class="shape-icon">⭐</span>Estrela</div></div></div>'+
             '<div class="control-group"><label>Cor de fundo</label><div class="color-options">'+colorPicker(adColors,S.color,'setAdColor')+'</div></div>'+
-            '<div class="control-group"><label>Cor do texto</label><div class="color-options">'+colorPicker(adTextColors,S.textColor,'setAdTextColor')+'</div></div>';
-        renderAdesivo();openModal('Personalizar Adesivo em Vinil');
+            '<div class="control-group"><label>Cor do texto</label><div class="color-options">'+colorPicker(adTextColors,S.textColor,'setAdTextColor')+'</div></div>'+
+            '<div class="control-group"><label>Quantidade de adesivos</label>'+
+            '<input type="number" id="adQtd" value="10" min="1" max="9999" style="width:100px;padding:8px;border:2px solid #eee;border-radius:10px;text-align:center;font-size:1rem;font-family:Poppins,sans-serif" oninput="S.adQtd=this.value"></div>'+
+            '<div class="control-group"><label>Observações</label>'+
+            '<textarea id="adObs" placeholder="Ex: Gostaria de adicionar brilho, material específico, quantidade desejada..." '+
+            'style="width:100%;min-height:70px;border:2px solid #eee;border-radius:12px;padding:12px;font-family:Poppins,sans-serif;font-size:.85rem;resize:vertical" '+
+            'oninput="S.adObs=this.value"></textarea></div>';
+        renderAdesivo();openModal('Personalizar Tag');
     }
     function setAdColor(c,n,el){S.color=c;selectColor(el);renderAdesivo()}
     function setAdTextColor(c,n,el){S.textColor=c;selectColor(el);renderAdesivo()}
@@ -827,104 +995,250 @@
             '<div class="adesivo-logo-area">'+logo+'<div class="adesivo-text-content" style="color:'+S.textColor+'">'+esc(text)+'</div></div></div>');
     }
 
+    // ===== NÚMERO DE MESA =====
+    function openNumeroMesa(){
+        currentModal='numeroMesa';S.numDe='1';S.numAte='10';
+        html('controlsArea').innerHTML=
+            '<div class="control-group"><label>Sequência de números</label>'+
+            '<div style="display:flex;gap:10px;align-items:center">'+
+            '<span style="font-size:.85rem;font-weight:600">De:</span>'+
+            '<input type="number" id="numDe" value="1" min="1" max="100" style="width:70px;padding:8px;border:2px solid #eee;border-radius:10px;text-align:center;font-size:1rem" oninput="S.numDe=this.value;renderNumeroMesa()">'+
+            '<span style="font-size:.85rem;font-weight:600">Até:</span>'+
+            '<input type="number" id="numAte" value="10" min="1" max="100" style="width:70px;padding:8px;border:2px solid #eee;border-radius:10px;text-align:center;font-size:1rem" oninput="S.numAte=this.value;renderNumeroMesa()">'+
+            '</div></div>';
+        renderNumeroMesa();openModal('Número de Mesa');
+        document.getElementById('sendBtn').textContent='📱 Criar Arte com Profissional';
+        document.getElementById('sendBtn').textContent='📱 Enviar pelo WhatsApp';
+        document.getElementById('sendBtn').onclick=function(){
+            var qtdEl=document.getElementById('modalQtd');
+            var qtd=parseInt(qtdEl.value);
+            if(!qtd||qtd<1){qtdEl.style.borderColor='#e74c3c';qtdEl.focus();alert('Preencha a quantidade!');return}
+            qtdEl.style.borderColor='#eee';
+            var msg='Olá! Gostaria de pedir orçamento:\n\n'+
+                '📦 Produto: *Número de Mesa*\n'+
+                '🔢 Sequência: do '+S.numDe+' ao '+S.numAte+'\n'+
+                '🔢 Quantidade: '+qtd+'\n\nAguardo o valor!';
+            var preview=document.getElementById('previewBox');
+            saveOrder('Número de Mesa', 'Sequência: '+S.numDe+' ao '+S.numAte+' | Qtd: '+qtd, preview?preview.innerHTML:'');
+            window.open('https://wa.me/5519993797497?text='+encodeURIComponent(msg),'_blank');
+            closeModal();
+        };
+    }
+    function renderNumeroMesa(){
+        var de=parseInt(S.numDe)||1,ate=parseInt(S.numAte)||10;
+        var nums='';var count=Math.min(ate-de+1,6);
+        for(var i=0;i<count;i++){
+            var n=de+i;
+            nums+='<div style="width:50px;height:50px;background:#fff;border:2px solid var(--rosa-pastel);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:var(--texto-escuro);font-family:Playfair Display,serif">'+String(n).padStart(2,'0')+'</div>';
+        }
+        if(ate-de+1>6)nums+='<div style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#888">...</div>';
+        setPreview(
+            '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:15px">'+
+            '<div style="font-family:Playfair Display,serif;font-size:1.1rem;font-weight:600;color:var(--texto-escuro)">Números de Mesa</div>'+
+            '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:220px">'+nums+'</div>'+
+            '<div style="font-size:.8rem;color:#888;font-family:Poppins,sans-serif">Do '+(String(de).padStart(2,'0'))+' ao '+(String(ate).padStart(2,'0'))+' ('+(ate-de+1)+' unidades)</div>'+
+            '</div>');
+    }
+
+    // ===== CABEÇÃO DE FORMATURA =====
+    function openCabecao(){
+        currentModal='cabecao';S.photoData='';S.cabecaoSize='M (80x60cm)';S.cabecaoObs='';S.cabecaoPosX=0;S.cabecaoPosY=0;S.cabecaoZoom=100;
+        html('controlsArea').innerHTML=
+            '<div class="control-group"><label>Foto do rosto</label>'+
+            '<div class="upload-small" id="cabecaoUpload" style="min-height:100px">'+
+            '<input type="file" accept="image/*" onchange="handleCabecaoPhoto(this)">'+
+            '<div class="upload-icon" id="cabecaoUpIcon">📷</div>'+
+            '<div class="upload-text" id="cabecaoUpText">Clique para enviar ou Ctrl+V para colar a foto</div>'+
+            '</div>'+
+            '<p style="font-size:.75rem;color:#888;margin-top:6px">Envie uma foto de rosto de frente. Arraste a foto no preview para ajustar a posição. Use o zoom para aproximar.</p></div>'+
+            '<div class="control-group" id="cabecaoPosControls" style="display:none">'+
+            '<label>🔍 Zoom</label>'+
+            '<input type="range" class="size-slider" min="100" max="300" value="100" oninput="S.cabecaoZoom=parseInt(this.value);renderCabecao()">'+
+            '</div>'+
+            '<div class="control-group"><label>Tamanho do cabeção</label>'+
+            '<div class="option-buttons" style="flex-wrap:wrap">'+
+            '<button class="opt-btn" onclick="S.cabecaoSize=\'P (60x40cm)\';selOpt(this);renderCabecao()">P (60x40cm)</button>'+
+            '<button class="opt-btn selected" onclick="S.cabecaoSize=\'M (80x60cm)\';selOpt(this);renderCabecao()">M (80x60cm)</button>'+
+            '<button class="opt-btn" onclick="S.cabecaoSize=\'G (90x60cm)\';selOpt(this);renderCabecao()">G (90x60cm)</button>'+
+            '</div></div>'+
+            '<div class="control-group"><label>Observações (óculos, acessórios, etc.)</label>'+
+            '<textarea id="cabecaoObs" placeholder="Ex: Adicionar óculos de grau, chapéu de formatura, laço rosa..." '+
+            'style="width:100%;min-height:80px;border:2px solid #eee;border-radius:12px;padding:12px;font-family:Poppins,sans-serif;font-size:.85rem;resize:vertical" '+
+            'oninput="S.cabecaoObs=this.value;renderCabecao()"></textarea></div>';
+        renderCabecao();openModal('Personalizar Cabeção de Formatura');
+    }
+    // Drag estilo Canva - mover imagem livremente dentro da moldura
+    var cabDrag=false,cabStartX=0,cabStartY=0,cabOrigX=0,cabOrigY=0;
+    document.addEventListener('mousedown',function(e){
+        var img=document.getElementById('cabecaoImg');
+        if(!img||currentModal!=='cabecao')return;
+        if(e.target===img||e.target.id==='cabecaoHead'){
+            e.preventDefault();
+            cabDrag=true;cabStartX=e.clientX;cabStartY=e.clientY;
+            cabOrigX=S.cabecaoPosX;cabOrigY=S.cabecaoPosY;
+            img.style.cursor='grabbing';
+        }
+    });
+    document.addEventListener('touchstart',function(e){
+        var img=document.getElementById('cabecaoImg');
+        if(!img||currentModal!=='cabecao')return;
+        if(e.target===img||e.target.id==='cabecaoHead'){
+            cabDrag=true;var t=e.touches[0];cabStartX=t.clientX;cabStartY=t.clientY;
+            cabOrigX=S.cabecaoPosX;cabOrigY=S.cabecaoPosY;
+        }
+    },{passive:true});
+    document.addEventListener('mousemove',function(e){
+        if(!cabDrag||currentModal!=='cabecao')return;
+        S.cabecaoPosX=cabOrigX+(e.clientX-cabStartX);
+        S.cabecaoPosY=cabOrigY+(e.clientY-cabStartY);
+        var img=document.getElementById('cabecaoImg');
+        if(img)img.style.transform='translate('+S.cabecaoPosX+'px,'+S.cabecaoPosY+'px)';
+    });
+    document.addEventListener('touchmove',function(e){
+        if(!cabDrag||currentModal!=='cabecao')return;
+        var t=e.touches[0];
+        S.cabecaoPosX=cabOrigX+(t.clientX-cabStartX);
+        S.cabecaoPosY=cabOrigY+(t.clientY-cabStartY);
+        var img=document.getElementById('cabecaoImg');
+        if(img)img.style.transform='translate('+S.cabecaoPosX+'px,'+S.cabecaoPosY+'px)';
+    },{passive:true});
+    document.addEventListener('mouseup',function(){
+        if(cabDrag){cabDrag=false;var img=document.getElementById('cabecaoImg');if(img)img.style.cursor='grab'}
+    });
+    document.addEventListener('touchend',function(){cabDrag=false});
+
+    function handleCabecaoPhoto(input){
+        var file=input.files[0];if(!file)return;
+        var r=new FileReader();r.onload=function(e){
+            S.photoData=e.target.result;
+            renderCabecao();
+            var el=document.getElementById('cabecaoUpText');if(el)el.textContent='Foto carregada! Clique para trocar.';
+            var ic=document.getElementById('cabecaoUpIcon');if(ic)ic.style.display='none';
+            var pc=document.getElementById('cabecaoPosControls');if(pc)pc.style.display='';
+        };r.readAsDataURL(file);
+    }
+    function renderCabecao(){
+        var sz={'P (60x40cm)':160,'M (80x60cm)':200,'G (90x60cm)':240};
+        var headSize=sz[S.cabecaoSize]||200;
+        var headH=Math.round(headSize*1.2);
+        var zm=S.cabecaoZoom||100;
+        var tx=S.cabecaoPosX||0,ty=S.cabecaoPosY||0;
+        var photo=S.photoData
+            ?'<img id="cabecaoImg" src="'+S.photoData+'" draggable="false" style="width:'+zm+'%;min-width:100%;min-height:100%;object-fit:cover;position:absolute;top:0;left:0;transform:translate('+tx+'px,'+ty+'px);cursor:grab;user-select:none;pointer-events:auto">'
+            :'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#fce4ec,#fff3e0)">😄</div>';
+        var obsText=S.cabecaoObs?'<div style="margin-top:10px;padding:6px 12px;background:rgba(255,255,255,.9);border-radius:8px;font-size:.7rem;color:#555;max-width:200px;text-align:center;word-break:break-word">📝 '+esc(S.cabecaoObs)+'</div>':'';
+        setPreview(
+            '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%">'+
+            '<div id="cabecaoHead" style="width:'+headSize+'px;height:'+headH+'px;overflow:hidden;filter:drop-shadow(0 8px 20px rgba(0,0,0,.25));position:relative;'+
+            'border-radius:48% 48% 42% 42% / 52% 52% 42% 42%;user-select:none">'+
+            photo+'</div>'+
+            '<div style="margin-top:10px;font-family:Poppins,sans-serif;font-size:.8rem;font-weight:600;color:#555;background:rgba(212,175,55,.15);padding:4px 14px;border-radius:20px">'+
+            '📏 Tamanho: '+S.cabecaoSize+'</div>'+
+            obsText+
+            '</div>');
+    }
+
+    // ===== SALVAR PEDIDO (IndexedDB) =====
+    function saveOrder(produto, detalhes, previewHtml){
+        var req=indexedDB.open('ElasOrdersDB',1);
+        req.onupgradeneeded=function(e){
+            var db=e.target.result;
+            if(!db.objectStoreNames.contains('orders'))db.createObjectStore('orders',{keyPath:'id',autoIncrement:true});
+        };
+        req.onsuccess=function(e){
+            var db=e.target.result;
+            var tx=db.transaction('orders','readwrite');
+            tx.objectStore('orders').add({
+                produto:produto,
+                detalhes:detalhes,
+                previewHtml:previewHtml,
+                data:new Date().toISOString(),
+                status:'Pendente'
+            });
+        };
+    }
+
     // ===== SEND WHATSAPP =====
     function getColorName(hex,list){for(var i=0;i<list.length;i++)if(list[i].color===hex)return list[i].name;return hex}
     function sendWhatsApp(){
-        var msg='';
-        if(currentModal==='bubble'){
-            var estilos={balloons:'Balões dentro',full:'Encapsula total',half:'Encapsula parcial',heart:'Balão metalizado coração',confetti:'Confete holográfico'+(S.confeteFull?' (total)':' (parcial)')};
-            var textos=S.bubbleTexts.map(function(t){return t.text}).join(', ');
-            msg='Olá! Gostaria de personalizar um *Balão Bubble*:\n\n'+
-                '🎈 Estilo: '+estilos[S.style]+'\n'+
-                '🎨 Cor 1: '+getColorName(S.color,innerBalloonColors)+'\n';
-            if(S.style==='balloons') msg+='🎨 Cor 2: '+getColorName(S.bubbleColors2,innerBalloonColors)+'\n🎨 Cor 3: '+getColorName(S.bubbleColors3,innerBalloonColors)+'\n';
-            msg+=(textos?'✍️ Textos: '+textos+'\n':'✍️ Sem texto\n')+
-                '🔤 Cor do texto: '+getColorName(S.textColor,bubbleTextColors)+'\n\nAguardo orçamento!';
-        } else if(currentModal==='topo'){
-            var t1=S.text1||'';if(!t1){alert('Digite o nome!');return}
-            var fontes={'Dancing Script':'Cursiva','Poppins':'Forma','Playfair Display':'Elegante'};
-            msg='Olá! Gostaria de personalizar um *Topo de Bolo*:\n\n'+
-                '✍️ Nome: '+t1+(S.text2?'\n🔢 Número: '+S.text2:'')+'\n'+
-                '✒️ Fonte: '+(fontes[S.topoFont]||'Cursiva')+'\n'+
-                '📐 Formato: '+(S.tipo3d?'3D':'2D')+'\n'+
-                '🎨 Cor do contorno: '+getColorName(S.layer1,topoColors)+'\n'+
-                '✨ Cor da letra: '+(S.layer3==='#D4AF37'?'Dourado':'Prata')+'\n\nAguardo orçamento!';
-        } else if(currentModal==='tag'){
-            var n=S.nome||'';if(!n){alert('Digite o nome!');return}
-            msg='Olá! Gostaria de personalizar uma *Tag de Formatura*:\n\n'+
-                '💬 Frase: '+(S.frase||'(definir)')+'\n'+
-                '👤 Nome: '+n+'\n'+
-                '🎨 Cor de fundo: '+getColorName(S.color,tagColors)+'\n'+
-                '🔤 Cor do texto: '+getColorName(S.textColor,tagTextColors)+'\n'+
-                '📷 Foto: '+(S.photoData?'Sim, envio em seguida':'Enviarei depois')+'\n\nAguardo orçamento!';
-        } else if(currentModal==='adesivo'){
-            var t=S.text1||'';if(!t&&!S.logoData){alert('Digite o texto ou anexe uma logo!');return}
-            msg='Olá! Gostaria de personalizar *Adesivos em Vinil*:\n\n'+
-                (t?'✍️ Texto: '+t+'\n':'')+
-                '📐 Formato: '+S.shape+'\n'+
-                '🎨 Cor de fundo: '+getColorName(S.color,adColors)+'\n'+
-                '🔤 Cor do texto: '+getColorName(S.textColor,adTextColors)+'\n'+
-                '🖼️ Logo: '+(S.logoData?'Sim, envio em seguida':'Não')+'\n\nAguardo orçamento!';
-        }
-        if(msg) window.open('https://wa.me/5519999264075?text='+encodeURIComponent(msg),'_blank');
+        var nomes={bubble:'Balão Bubble',topo:'Topo de Bolo (Nome & Idade)',topoPersonagem:'Topo de Bolo (Personagem/Mesversário)',tag:'Tag de Formatura',adesivo:'Tags Personalizadas',cabecao:'Cabeção de Formatura'};
+        var produto=nomes[currentModal]||currentModal;
+        var qtdEl=document.getElementById('modalQtd');
+        var qtd=parseInt(qtdEl.value);
+        if(!qtd||qtd<1){qtdEl.style.borderColor='#e74c3c';qtdEl.focus();alert('Preencha a quantidade!');return}
+        qtdEl.style.borderColor='#eee';
+        var msg='Olá! Gostaria de pedir orçamento:\n\n'+
+            '📦 Produto: *'+produto+'*\n'+
+            '🔢 Quantidade: '+qtd+'\n\nAguardo o valor!';
+        // Salvar detalhes completos no admin
+        var preview=document.getElementById('previewBox');
+        saveOrder(produto, 'Quantidade: '+qtd, preview?preview.innerHTML:'');
+        window.open('https://wa.me/5519993797497?text='+encodeURIComponent(msg),'_blank');
         closeModal();
     }
 
-    // ===== SEASONAL =====
+    // ===== SEASONAL (IndexedDB com fallback localStorage) =====
     function loadSeasonal(){
-        var c=document.getElementById('seasonal-products');var d=JSON.parse(localStorage.getItem('elasSeasonalCatalog')||'null');
-        if(!d||!d.products||!d.products.length){c.innerHTML='<p class="seasonal-empty">Em breve, novos produtos para datas comemorativas!</p>';return}
-        if(d.catalogName)html('seasonal-title').textContent=d.catalogName;
-        if(d.catalogDescription)html('seasonal-subtitle').textContent=d.catalogDescription;
-        c.innerHTML='';
-        d.products.forEach(function(p){
-            var card=document.createElement('div');card.className='product-card';
-            var img=p.image?'<img src="'+p.image+'" style="width:100%;height:100%;object-fit:cover">':'<div class="product-icon">'+(p.emoji||'📦')+'</div>';
-            var tags=p.tags?p.tags.split(',').map(function(t){return'<span class="feature-tag">'+t.trim()+'</span>'}).join(''):'';
-            card.innerHTML='<div class="product-image">'+img+(p.badge?'<span class="product-badge">'+p.badge+'</span>':'')+'</div>'+
-                '<div class="product-info"><h3>'+p.name+'</h3><p>'+p.description+'</p>'+(tags?'<div class="product-features">'+tags+'</div>':'')+
-                '<div class="product-buttons"><a href="https://wa.me/5519999264075?text='+encodeURIComponent('Olá! Gostaria de saber mais sobre: '+p.name)+'" class="product-cta" target="_blank">Solicitar Orçamento</a></div></div>';
-            c.appendChild(card);
-        });
+        var c=document.getElementById('seasonal-products');
+        function render(d){
+            if(!d||!d.products||!d.products.length){c.innerHTML='<p class="seasonal-empty">Em breve, novos produtos para datas comemorativas!</p>';return}
+            if(d.catalogName)document.getElementById('seasonal-title').textContent=d.catalogName;
+            if(d.catalogDescription)document.getElementById('seasonal-subtitle').textContent=d.catalogDescription;
+            c.innerHTML='';
+            d.products.forEach(function(p){
+                var card=document.createElement('div');card.className='product-card';
+                var img=p.image?'<img src="'+p.image+'" style="width:100%;height:100%;object-fit:cover">':'<div class="product-icon">'+(p.emoji||'📦')+'</div>';
+                var tags=p.tags?p.tags.split(',').map(function(t){return'<span class="feature-tag">'+t.trim()+'</span>'}).join(''):'';
+                var priceHtml=p.price?'<span class="product-price">R$ '+p.price+'</span>':'';
+                var descHtml=p.description?'<p>'+p.description+'</p>':'';
+                card.innerHTML='<div class="product-image">'+img+(p.badge?'<span class="product-badge">'+p.badge+'</span>':'')+'</div>'+
+                    '<div class="product-info"><h3>'+p.name+'</h3>'+priceHtml+descHtml+(tags?'<div class="product-features">'+tags+'</div>':'')+
+                    '<div class="product-buttons"><a href="https://wa.me/5519993797497?text='+encodeURIComponent('Olá! Gostaria de saber mais sobre: '+p.name)+'" class="product-cta" target="_blank">Solicitar Orçamento</a></div></div>';
+                c.appendChild(card);
+            });
+        }
+        var req=indexedDB.open('ElasCatalogDB',1);
+        req.onupgradeneeded=function(e){var db=e.target.result;if(!db.objectStoreNames.contains('catalog'))db.createObjectStore('catalog',{keyPath:'id'});};
+        req.onsuccess=function(e){
+            var db=e.target.result;var tx=db.transaction('catalog','readonly');var gr=tx.objectStore('catalog').get('main');
+            gr.onsuccess=function(){render(gr.result||JSON.parse(localStorage.getItem('elasSeasonalCatalog')||'null'));};
+        };
+        req.onerror=function(){render(JSON.parse(localStorage.getItem('elasSeasonalCatalog')||'null'));};
     }
     loadSeasonal();
 
-    // ===== GALLERY (IndexedDB) =====
-    var galleryDB;
-    function openGalleryDB(cb){
-        if(galleryDB){cb(galleryDB);return}
-        var req=indexedDB.open('ElasGalleryDB',1);
-        req.onupgradeneeded=function(e){
-            var db=e.target.result;
-            if(!db.objectStoreNames.contains('photos'))db.createObjectStore('photos',{keyPath:'id',autoIncrement:true});
-        };
-        req.onsuccess=function(e){galleryDB=e.target.result;cb(galleryDB)};
-        req.onerror=function(){};
-    }
+    // ===== GALLERY (Server API) =====
+    var galleryPhotos=[],lbIdx=0;
     function loadGallery(){
-        openGalleryDB(function(db){
-            var tx=db.transaction('photos','readonly');
-            var req=tx.objectStore('photos').getAll();
-            req.onsuccess=function(){
-                var photos=req.result||[];
-                var grid=document.getElementById('galleryGrid');
-                if(!photos.length){grid.innerHTML='<p class="gallery-empty">Em breve, fotos dos nossos trabalhos!</p>';return}
-                grid.innerHTML='';
-                photos.forEach(function(photo){
-                    var item=document.createElement('div');
-                    item.className='gallery-item';
-                    item.innerHTML='<img src="'+photo.src+'" alt="Trabalho Ela\'s Personalizados">';
-                    item.onclick=function(){openLightbox(photo.src)};
-                    grid.appendChild(item);
-                });
-            };
-        });
+        fetch('/api/gallery').then(function(r){return r.json()}).then(function(photos){
+            galleryPhotos=photos||[];
+            var track=document.getElementById('galleryTrack');
+            if(!galleryPhotos.length){track.innerHTML='<p class="gallery-empty">Em breve, fotos dos nossos trabalhos!</p>';return}
+            track.innerHTML='';
+            galleryPhotos.forEach(function(photo,i){
+                var item=document.createElement('div');
+                item.className='gallery-item';
+                item.innerHTML='<img src="'+photo.src+'" alt="Trabalho Ela\'s Personalizados">';
+                item.onclick=function(){openLightbox(i)};
+                track.appendChild(item);
+            });
+        }).catch(function(){});
     }
-    function openLightbox(src){
-        document.getElementById('lightboxImg').src=src;
+    // Lightbox with navigation
+    function openLightbox(idx){
+        lbIdx=idx;
+        document.getElementById('lightboxImg').src=galleryPhotos[idx].src;
         document.getElementById('lightbox').classList.add('active');
     }
-    function closeLightbox(){document.getElementById('lightbox').classList.remove('active')}
+    function closeLightbox(e){
+        if(e&&(e.target.classList.contains('lb-prev')||e.target.classList.contains('lb-next')))return;
+        document.getElementById('lightbox').classList.remove('active');
+    }
+    function lbNav(dir,e){
+        if(e){e.stopPropagation();e.preventDefault()}
+        lbIdx=Math.max(0,Math.min(galleryPhotos.length-1,lbIdx+dir));
+        document.getElementById('lightboxImg').src=galleryPhotos[lbIdx].src;
+    }
     loadGallery();
 
     // ===== ANTI-SCREENSHOT PROTECTION =====
@@ -978,11 +1292,16 @@
                     var data=ev.target.result;
                     if(currentModal==='tag'){S.photoData=data;renderTag();var el=html('tagUpload');if(el)el.querySelector('.upload-text').textContent='Foto colada!';}
                     else if(currentModal==='adesivo'){S.logoData=data;renderAdesivo();var el=html('adUpload');if(el)el.querySelector('.upload-text').textContent='Logo colada!';}
+                    else if(currentModal==='cabecao'){S.photoData=data;renderCabecao();var el=document.getElementById('cabecaoUpText');if(el)el.textContent='Foto colada!';var ic=document.getElementById('cabecaoUpIcon');if(ic)ic.style.display='none';var pc=document.getElementById('cabecaoPosControls');if(pc)pc.style.display='';}
                 };
                 reader.readAsDataURL(file);break;
             }
         }
     });
     </script>
+    <a href="https://wa.me/5519993797497?text=Olá! Vim pelo site e gostaria de saber mais sobre os produtos." target="_blank" class="wpp-float" title="Fale conosco no WhatsApp">
+        <span class="wpp-float-label">Fale conosco!</span>
+        <div class="wpp-float-btn"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+    </a>
 </body>
 </html>

@@ -100,6 +100,73 @@
         .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--texto-escuro); color: var(--branco); padding: 14px 30px; border-radius: 12px; font-size: 0.9rem; z-index: 2000; transition: transform 0.4s; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
+        #ordersList { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+        .order-item { background: var(--branco); border: 2px solid #eee; border-radius: 12px; padding: 12px; }
+        .order-item.status-Confirmado { border-color: #4CAF50; }
+        .order-item.status-Pendente { border-color: #f0ad4e; }
+        .order-item.status-Descartado { border-color: #e74c3c; opacity: 0.6; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 6px; }
+        .order-produto { font-weight: 600; font-size: 0.8rem; }
+        .order-data { font-size: 0.65rem; color: var(--texto-medio); }
+        .order-status { padding: 2px 8px; border-radius: 20px; font-size: 0.6rem; font-weight: 600; color: #fff; }
+        .order-status.Pendente { background: #f0ad4e; }
+        .order-status.Confirmado { background: #4CAF50; }
+        .order-status.Descartado { background: #e74c3c; }
+        .order-detalhes { font-size: 0.7rem; color: var(--texto-medio); white-space: pre-line; margin-bottom: 8px; background: #f9f9f9; padding: 6px 8px; border-radius: 6px; }
+        .order-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+        .order-actions button { padding: 4px 8px; border: none; border-radius: 6px; font-size: 0.65rem; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .obtn-confirm { background: #4CAF50; color: #fff; }
+        .obtn-pending { background: #f0ad4e; color: #fff; }
+        .obtn-discard { background: #e74c3c; color: #fff; }
+        .obtn-view { background: linear-gradient(135deg, var(--rosa-pastel), var(--laranja-pastel)); color: #fff; }
+        .art-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; backdrop-filter: blur(5px); }
+        .art-modal-overlay.active { display: flex; }
+        .art-modal { background: #fff; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow: auto; }
+        .art-modal-header { padding: 20px 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .art-modal-header h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+        .art-modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999; }
+        .art-modal-body { padding: 25px; display: flex; align-items: center; justify-content: center; min-height: 300px; background: linear-gradient(135deg, #fce4ec, #fff3e0); }
+        /* Estilos do preview (importados do site) */
+        .topo-preview{display:flex;flex-direction:column;align-items:center}
+        .topo-text-content{font-weight:700;word-break:break-word;-webkit-text-stroke:8px;paint-order:stroke fill}
+        .topo-stick-el{width:4px;height:60px;background:#ccc;border-radius:2px}
+        .topo-cake-el{width:200px;display:flex;flex-direction:column;border-radius:0 0 12px 12px;overflow:hidden}
+        .topo-layer{height:28px}
+        .tag-circle-wrap{width:240px;height:240px;position:relative}
+        .tag-circle-bg{width:240px;height:240px;border-radius:50%;position:absolute;inset:0;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+        .tag-inner-ring{position:absolute;inset:10px;border-radius:50%;border:2px solid rgba(255,255,255,.4)}
+        .tag-photo-circle{border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:2rem;border:2px solid rgba(255,255,255,.3);overflow:hidden}
+        .tag-photo-circle img{width:100%;height:100%;object-fit:cover}
+        .adesivo-preview-shape{display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;position:relative;box-shadow:3px 3px 0 rgba(0,0,0,.08)}
+        .adesivo-preview-shape.shape-redondo{width:200px;height:200px;border-radius:50%}
+        .adesivo-preview-shape.shape-quadrado{width:200px;height:200px;border-radius:15px}
+        .adesivo-preview-shape.shape-retangulo{width:240px;height:150px;border-radius:12px}
+        .adesivo-preview-shape.shape-coracao{width:200px;height:180px;clip-path:path('M100 170C100 170 15 110 15 60C15 25 45 5 75 25C85 32 95 42 100 55C105 42 115 32 125 25C155 5 185 25 185 60C185 110 100 170 100 170Z')}
+        .adesivo-preview-shape.shape-estrela{width:210px;height:200px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+        .adesivo-logo-area{display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .adesivo-text-content{font-family:'Poppins',sans-serif;font-weight:600;font-size:1rem;word-break:break-word}
+        /* Bubble preview */
+        .bubble-preview{position:relative;width:280px;height:280px}
+        .bubble-sphere{width:280px;height:280px;border-radius:50%;border:3px solid rgba(255,255,255,.7);position:relative;overflow:hidden;box-shadow:0 0 40px rgba(255,255,255,.3),inset 0 0 30px rgba(255,255,255,.2)}
+        .bubble-sphere .bubble-shine{position:absolute;top:12%;left:18%;width:35px;height:22px;background:rgba(255,255,255,.6);border-radius:50%;transform:rotate(-30deg);z-index:5;pointer-events:none}
+        .balloon-float{position:absolute;border-radius:50%;box-shadow:inset -3px -3px 8px rgba(0,0,0,.1);pointer-events:none}
+        .balloon-float:nth-child(1){animation:bFloat1 3s ease-in-out infinite}
+        .balloon-float:nth-child(2){animation:bFloat2 3.5s ease-in-out infinite .3s}
+        .balloon-float:nth-child(3){animation:bFloat3 2.8s ease-in-out infinite .6s}
+        .balloon-float:nth-child(4){animation:bFloat4 3.2s ease-in-out infinite .9s}
+        .balloon-float:nth-child(5){animation:bFloat5 3s ease-in-out infinite 1.2s}
+        @keyframes bFloat1{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(5px,-8px) rotate(3deg)}}
+        @keyframes bFloat2{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(-6px,-5px) rotate(-4deg)}}
+        @keyframes bFloat3{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(4px,-10px) rotate(2deg)}}
+        @keyframes bFloat4{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(-3px,-6px) rotate(-2deg)}}
+        @keyframes bFloat5{0%,100%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(6px,-4px) rotate(3deg)}}
+        .bubble-knot-svg{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%)}
+        .bubble-string-line{position:absolute;bottom:-65px;left:50%;width:2px;height:50px;transform:translateX(-50%);background:linear-gradient(to bottom,rgba(200,200,200,.6),transparent)}
+        .drag-text-box{position:absolute;user-select:none;z-index:10;padding:6px 10px;border:2px solid transparent;font-family:'Dancing Script',cursive;font-weight:700;text-shadow:1px 1px 3px rgba(0,0,0,.15);min-width:20px;text-align:center;overflow-wrap:break-word}
+        .drag-text-box .drag-delete,.drag-text-box .canva-handle{display:none!important}
+        .confetti-dot{position:absolute;border-radius:1px}
+        .obtn-delete { background: #ddd; color: #555; }
+
         @media (max-width: 768px) {
             .catalog-config, .add-form-grid { grid-template-columns: 1fr; }
             .product-item { flex-direction: column; text-align: center; }
@@ -187,6 +254,14 @@
                                 <label>Tags (separadas por vírgula)</label>
                                 <input type="text" id="prodTags" placeholder="Ex: Páscoa, Chocolate, Presente">
                             </div>
+                            <div class="form-group">
+                                <label>Preço (R$)</label>
+                                <input type="text" id="prodPrice" placeholder="Ex: 29,90 ou A partir de 15,00">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>Descrição</label>
+                                <textarea id="prodDescription" placeholder="Descreva o produto (ex: Ovo de chocolate personalizado com nome e tema)"></textarea>
+                            </div>
                             <div class="form-group full-width">
                                 <label>Foto do Produto</label>
                                 <div class="img-upload-area" id="imgUploadArea">
@@ -234,12 +309,40 @@
                 </div>
             </div>
 
+            <!-- PEDIDOS / ARTES -->
+            <div class="dash-card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;flex-wrap:wrap;gap:10px">
+                    <div>
+                        <h2>Pedidos / Artes dos Clientes</h2>
+                        <p class="card-subtitle" style="margin-bottom:0">Artes criadas pelos clientes ao pedir orçamento. Classifique cada pedido.</p>
+                    </div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <button class="btn btn-outline btn-sm" onclick="filterOrders('todos')" id="filtroTodos" style="font-size:.75rem">Todos</button>
+                        <button class="btn btn-outline btn-sm" onclick="filterOrders('Pendente')" id="filtroPendente" style="font-size:.75rem;border-color:#f0ad4e;color:#f0ad4e">Pendentes</button>
+                        <button class="btn btn-outline btn-sm" onclick="filterOrders('Confirmado')" id="filtroConfirmado" style="font-size:.75rem;border-color:#4CAF50;color:#4CAF50">Confirmados</button>
+                        <button class="btn btn-outline btn-sm" onclick="filterOrders('Descartado')" id="filtroDescartado" style="font-size:.75rem;border-color:#e74c3c;color:#e74c3c">Descartados</button>
+                    </div>
+                </div>
+                <div id="ordersList"></div>
+            </div>
+
             <!-- DANGER ZONE -->
             <div class="dash-card">
                 <h2>Limpar Catálogo</h2>
                 <p class="card-subtitle">Remove todos os produtos do catálogo sazonal. Os produtos fixos do site não são afetados.</p>
                 <button class="btn btn-danger btn-sm" onclick="clearCatalog()">Limpar Todo o Catálogo Sazonal</button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL ARTE -->
+    <div class="art-modal-overlay" id="artModal">
+        <div class="art-modal">
+            <div class="art-modal-header">
+                <h3 id="artModalTitle">Arte do Cliente</h3>
+                <button class="art-modal-close" onclick="closeArtModal()">✕</button>
+            </div>
+            <div class="art-modal-body" id="artModalBody"></div>
         </div>
     </div>
 
@@ -277,26 +380,94 @@
             location.reload();
         }
 
-        function getData() {
-            return JSON.parse(localStorage.getItem('elasSeasonalCatalog') || '{"catalogName":"","catalogDescription":"","products":[]}');
+        // ===== CATALOG DATA (IndexedDB - sem limite de armazenamento) =====
+        var catalogDB;
+        function openCatalogDB(cb) {
+            if (catalogDB) { cb(catalogDB); return; }
+            var req = indexedDB.open('ElasCatalogDB', 1);
+            req.onupgradeneeded = function(e) {
+                var db = e.target.result;
+                if (!db.objectStoreNames.contains('catalog')) {
+                    db.createObjectStore('catalog', { keyPath: 'id' });
+                }
+            };
+            req.onsuccess = function(e) { catalogDB = e.target.result; cb(catalogDB); };
+            req.onerror = function() { showToast('Erro ao abrir banco de dados.'); };
         }
 
-        function saveData(data) {
-            localStorage.setItem('elasSeasonalCatalog', JSON.stringify(data));
+        function getCatalogData(cb) {
+            openCatalogDB(function(db) {
+                var tx = db.transaction('catalog', 'readonly');
+                var req = tx.objectStore('catalog').get('main');
+                req.onsuccess = function() {
+                    cb(req.result || { id: 'main', catalogName: '', catalogDescription: '', products: [] });
+                };
+            });
+        }
+
+        function saveCatalogData(data, cb) {
+            data.id = 'main';
+            openCatalogDB(function(db) {
+                var tx = db.transaction('catalog', 'readwrite');
+                tx.objectStore('catalog').put(data);
+                tx.oncomplete = function() { if (cb) cb(); };
+                tx.onerror = function() { showToast('Erro ao salvar! Tente novamente.'); };
+            });
+        }
+
+        // Migra dados antigos do localStorage para IndexedDB
+        function migrateCatalog(cb) {
+            var old = localStorage.getItem('elasSeasonalCatalog');
+            if (old) {
+                try {
+                    var data = JSON.parse(old);
+                    data.id = 'main';
+                    saveCatalogData(data, function() {
+                        localStorage.removeItem('elasSeasonalCatalog');
+                        cb();
+                    });
+                } catch(e) { cb(); }
+            } else { cb(); }
+        }
+
+        // Compress product image before saving to avoid localStorage limit
+        function compressProductImage(dataUrl, callback) {
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                var maxW = 600, maxH = 600;
+                var w = img.width, h = img.height;
+                if (w > maxW || h > maxH) {
+                    var ratio = Math.min(maxW / w, maxH / h);
+                    w = Math.round(w * ratio);
+                    h = Math.round(h * ratio);
+                }
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                callback(canvas.toDataURL('image/jpeg', 0.6));
+            };
+            img.onerror = function() { callback(dataUrl); };
+            img.src = dataUrl;
         }
 
         function loadDashboard() {
-            var data = getData();
-            document.getElementById('catalogName').value = data.catalogName || '';
-            renderProducts();
-            renderGallery();
+            migrateCatalog(function() {
+                getCatalogData(function(data) {
+                    document.getElementById('catalogName').value = data.catalogName || '';
+                    renderProducts();
+                });
+                renderGallery();
+                loadOrders();
+            });
         }
 
         function saveCatalogConfig() {
-            var data = getData();
-            data.catalogName = document.getElementById('catalogName').value.trim();
-            saveData(data);
-            showToast('Configurações salvas!');
+            getCatalogData(function(data) {
+                data.catalogName = document.getElementById('catalogName').value.trim();
+                saveCatalogData(data, function() {
+                    showToast('Configurações salvas!');
+                });
+            });
         }
 
         // Image upload
@@ -317,27 +488,30 @@
         }
 
         function renderProducts() {
-            var data = getData();
-            var list = document.getElementById('productList');
-            if (!data.products || data.products.length === 0) {
-                list.innerHTML = '<div class="empty-state"><div class="empty-icon">📦</div><p>Nenhum produto no catálogo sazonal.</p><p style="font-size:0.8rem;">Clique em "+ Adicionar Produto" para começar.</p></div>';
-                return;
-            }
-            list.innerHTML = '';
-            data.products.forEach(function(product, index) {
-                var item = document.createElement('div');
-                item.className = 'product-item';
-                var visual = product.image
-                    ? '<img src="' + product.image + '" class="p-thumb" alt="' + product.name + '">'
-                    : '<div class="p-emoji">' + (product.emoji || '📦') + '</div>';
-                item.innerHTML = visual +
-                    '<div class="p-details"><h4>' + product.name + '</h4>' +
-                    (product.badge ? '<span class="p-tags">Badge: ' + product.badge + '</span>' : '') +
-                    (product.tags ? ' <span class="p-tags">| Tags: ' + product.tags + '</span>' : '') +
-                    '</div><div class="p-actions">' +
-                    '<button class="btn btn-outline btn-sm" onclick="editProduct(' + index + ')">Editar</button>' +
-                    '<button class="btn btn-danger btn-sm" onclick="deleteProduct(' + index + ')">Excluir</button></div>';
-                list.appendChild(item);
+            getCatalogData(function(data) {
+                var list = document.getElementById('productList');
+                if (!data.products || data.products.length === 0) {
+                    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📦</div><p>Nenhum produto no catálogo sazonal.</p><p style="font-size:0.8rem;">Clique em "+ Adicionar Produto" para começar.</p></div>';
+                    return;
+                }
+                list.innerHTML = '';
+                data.products.forEach(function(product, index) {
+                    var item = document.createElement('div');
+                    item.className = 'product-item';
+                    var visual = product.image
+                        ? '<img src="' + product.image + '" class="p-thumb" alt="' + product.name + '">'
+                        : '<div class="p-emoji">' + (product.emoji || '📦') + '</div>';
+                    item.innerHTML = visual +
+                        '<div class="p-details"><h4>' + product.name + '</h4>' +
+                        (product.price ? '<span style="font-weight:600;color:#2e7d32;font-size:0.9rem">R$ ' + product.price + '</span><br>' : '') +
+                        (product.description ? '<p>' + product.description + '</p>' : '') +
+                        (product.badge ? '<span class="p-tags">Badge: ' + product.badge + '</span>' : '') +
+                        (product.tags ? ' <span class="p-tags">| Tags: ' + product.tags + '</span>' : '') +
+                        '</div><div class="p-actions">' +
+                        '<button class="btn btn-outline btn-sm" onclick="editProduct(' + index + ')">Editar</button>' +
+                        '<button class="btn btn-danger btn-sm" onclick="deleteProduct(' + index + ')">Excluir</button></div>';
+                    list.appendChild(item);
+                });
             });
         }
 
@@ -351,6 +525,8 @@
             document.getElementById('prodName').value = '';
             document.getElementById('prodBadge').value = '';
             document.getElementById('prodTags').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodDescription').value = '';
             document.getElementById('prodImageData').value = '';
             document.getElementById('editIndex').value = '-1';
             var img = document.getElementById('imgPreview');
@@ -370,183 +546,146 @@
             var name = document.getElementById('prodName').value.trim();
             if (!name) { showToast('Preencha o nome do produto!'); return; }
 
-            var product = {
-                emoji: document.getElementById('prodEmoji').value || '📦',
-                name: name,
-                description: '',
-                badge: document.getElementById('prodBadge').value.trim(),
-                tags: document.getElementById('prodTags').value.trim(),
-                image: document.getElementById('prodImageData').value || ''
-            };
+            var imageData = document.getElementById('prodImageData').value || '';
 
-            var data = getData();
-            var editIndex = parseInt(document.getElementById('editIndex').value);
-            if (editIndex >= 0) {
-                if (!product.image && data.products[editIndex].image) product.image = data.products[editIndex].image;
-                data.products[editIndex] = product;
-                showToast('Produto atualizado!');
-            } else {
-                data.products.push(product);
-                showToast('Produto adicionado!');
+            function doSave(finalImage) {
+                var product = {
+                    emoji: document.getElementById('prodEmoji').value || '📦',
+                    name: name,
+                    description: document.getElementById('prodDescription').value.trim(),
+                    badge: document.getElementById('prodBadge').value.trim(),
+                    tags: document.getElementById('prodTags').value.trim(),
+                    price: document.getElementById('prodPrice').value.trim(),
+                    image: finalImage
+                };
+
+                getCatalogData(function(data) {
+                    var editIndex = parseInt(document.getElementById('editIndex').value);
+                    if (editIndex >= 0) {
+                        if (!product.image && data.products[editIndex].image) product.image = data.products[editIndex].image;
+                        data.products[editIndex] = product;
+                    } else {
+                        data.products.push(product);
+                    }
+                    saveCatalogData(data, function() {
+                        showToast(editIndex >= 0 ? 'Produto atualizado!' : 'Produto adicionado!');
+                        renderProducts();
+                        cancelEdit();
+                    });
+                });
             }
-            saveData(data);
-            renderProducts();
-            cancelEdit();
+
+            if (imageData && imageData.indexOf('data:') === 0) {
+                compressProductImage(imageData, doSave);
+            } else {
+                doSave(imageData);
+            }
         }
 
         function editProduct(index) {
-            var data = getData();
-            var p = data.products[index];
-            document.getElementById('addForm').classList.add('active');
-            document.getElementById('formTitle').textContent = 'Editar Produto';
-            document.getElementById('prodEmoji').value = p.emoji || '📦';
-            document.getElementById('prodName').value = p.name;
-            document.getElementById('prodBadge').value = p.badge || '';
-            document.getElementById('prodTags').value = p.tags || '';
-            document.getElementById('editIndex').value = index;
-            document.getElementById('prodImageData').value = p.image || '';
-            if (p.image) {
-                var img = document.getElementById('imgPreview');
-                img.src = p.image;
-                img.style.display = 'block';
-                document.querySelector('#imgUploadArea .upload-icon').style.display = 'none';
-                document.querySelector('#imgUploadArea .upload-text').textContent = 'Foto carregada! Clique para trocar.';
-            }
-            window.scrollTo({ top: document.getElementById('addForm').offsetTop - 100, behavior: 'smooth' });
+            getCatalogData(function(data) {
+                var p = data.products[index];
+                document.getElementById('addForm').classList.add('active');
+                document.getElementById('formTitle').textContent = 'Editar Produto';
+                document.getElementById('prodEmoji').value = p.emoji || '📦';
+                document.getElementById('prodName').value = p.name;
+                document.getElementById('prodBadge').value = p.badge || '';
+                document.getElementById('prodTags').value = p.tags || '';
+                document.getElementById('prodPrice').value = p.price || '';
+                document.getElementById('prodDescription').value = p.description || '';
+                document.getElementById('editIndex').value = index;
+                document.getElementById('prodImageData').value = p.image || '';
+                if (p.image) {
+                    var img = document.getElementById('imgPreview');
+                    img.src = p.image;
+                    img.style.display = 'block';
+                    document.querySelector('#imgUploadArea .upload-icon').style.display = 'none';
+                    document.querySelector('#imgUploadArea .upload-text').textContent = 'Foto carregada! Clique para trocar.';
+                }
+                window.scrollTo({ top: document.getElementById('addForm').offsetTop - 100, behavior: 'smooth' });
+            });
         }
 
         function deleteProduct(index) {
             if (!confirm('Excluir este produto?')) return;
-            var data = getData();
-            data.products.splice(index, 1);
-            saveData(data);
-            renderProducts();
-            showToast('Produto excluído.');
+            getCatalogData(function(data) {
+                data.products.splice(index, 1);
+                saveCatalogData(data, function() {
+                    renderProducts();
+                    showToast('Produto excluído.');
+                });
+            });
         }
 
         function clearCatalog() {
             if (!confirm('Limpar todo o catálogo sazonal?')) return;
-            saveData({ catalogName: '', products: [] });
-            document.getElementById('catalogName').value = '';
-            renderProducts();
-            showToast('Catálogo limpo.');
+            saveCatalogData({ id: 'main', catalogName: '', catalogDescription: '', products: [] }, function() {
+                document.getElementById('catalogName').value = '';
+                renderProducts();
+                showToast('Catálogo limpo.');
+            });
         }
 
-        // ===== GALLERY (IndexedDB - sem limite) =====
-        var galleryDB;
-        function openGalleryDB(cb) {
-            if (galleryDB) { cb(galleryDB); return; }
-            var req = indexedDB.open('ElasGalleryDB', 1);
-            req.onupgradeneeded = function(e) {
-                var db = e.target.result;
-                if (!db.objectStoreNames.contains('photos')) {
-                    db.createObjectStore('photos', { keyPath: 'id', autoIncrement: true });
-                }
-            };
-            req.onsuccess = function(e) { galleryDB = e.target.result; cb(galleryDB); };
-            req.onerror = function() { showToast('Erro ao abrir banco de dados.'); };
-        }
-
+        // ===== GALLERY (Server API) =====
         function getAllPhotos(cb) {
-            openGalleryDB(function(db) {
-                var tx = db.transaction('photos', 'readonly');
-                var store = tx.objectStore('photos');
-                var req = store.getAll();
-                req.onsuccess = function() { cb(req.result || []); };
-            });
-        }
-
-        function addPhotoDB(dataUrl, cb) {
-            openGalleryDB(function(db) {
-                var tx = db.transaction('photos', 'readwrite');
-                var store = tx.objectStore('photos');
-                store.add({ src: dataUrl, date: Date.now() });
-                tx.oncomplete = function() { if (cb) cb(); };
-            });
-        }
-
-        function removePhotoDB(id, cb) {
-            openGalleryDB(function(db) {
-                var tx = db.transaction('photos', 'readwrite');
-                tx.objectStore('photos').delete(id);
-                tx.oncomplete = function() { if (cb) cb(); };
-            });
-        }
-
-        function compressImage(dataUrl, callback) {
-            var img = new Image();
-            img.onload = function() {
-                var canvas = document.createElement('canvas');
-                var maxW = 800, maxH = 800;
-                var w = img.width, h = img.height;
-                if (w > maxW || h > maxH) {
-                    var ratio = Math.min(maxW / w, maxH / h);
-                    w = Math.round(w * ratio);
-                    h = Math.round(h * ratio);
-                }
-                canvas.width = w; canvas.height = h;
-                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                callback(canvas.toDataURL('image/jpeg', 0.75));
-            };
-            img.src = dataUrl;
+            fetch('/api/gallery').then(function(r){return r.json()}).then(cb).catch(function(){cb([])});
         }
 
         function handleGalleryUpload(input) {
             var files = input.files;
             if (!files.length) return;
-            var total = files.length, loaded = 0;
+            var formData = new FormData();
             for (var i = 0; i < files.length; i++) {
-                (function(file) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        compressImage(e.target.result, function(compressed) {
-                            addPhotoDB(compressed, function() {
-                                loaded++;
-                                if (loaded >= total) {
-                                    renderGallery();
-                                    showToast(total + ' foto(s) adicionada(s)!');
-                                }
-                            });
-                        });
-                    };
-                    reader.readAsDataURL(file);
-                })(files[i]);
+                formData.append('photos', files[i]);
             }
+            fetch('/api/gallery/upload', { method: 'POST', body: formData })
+                .then(function(r){return r.json()})
+                .then(function(data){
+                    if(data.success){
+                        renderGallery();
+                        showToast(files.length + ' foto(s) adicionada(s)!');
+                    } else {
+                        showToast('Erro ao enviar fotos.');
+                    }
+                })
+                .catch(function(){showToast('Erro ao enviar fotos.')});
             input.value = '';
         }
 
         function addGalleryFromPaste(dataUrl) {
-            compressImage(dataUrl, function(compressed) {
-                addPhotoDB(compressed, function() {
+            // Convert base64 to blob and upload
+            fetch(dataUrl).then(function(r){return r.blob()}).then(function(blob){
+                var formData = new FormData();
+                formData.append('photos', blob, 'paste-' + Date.now() + '.jpeg');
+                return fetch('/api/gallery/upload', { method: 'POST', body: formData });
+            }).then(function(r){return r.json()}).then(function(data){
+                if(data.success){
                     renderGallery();
                     showToast('Foto colada na galeria!');
-                });
-            });
+                }
+            }).catch(function(){showToast('Erro ao colar foto.')});
         }
 
         function removeGalleryPhoto(id) {
             if (!confirm('Remover esta foto da galeria?')) return;
-            removePhotoDB(id, function() {
-                renderGallery();
-                showToast('Foto removida.');
-            });
+            fetch('/api/gallery/' + id, { method: 'DELETE' })
+                .then(function(r){return r.json()})
+                .then(function(data){
+                    if(data.success){
+                        renderGallery();
+                        showToast('Foto removida.');
+                    }
+                })
+                .catch(function(){showToast('Erro ao remover foto.')});
         }
 
-        // Reorder: clear DB and re-add in new order
         function reorderPhotos(orderedPhotos, cb) {
-            openGalleryDB(function(db) {
-                var tx = db.transaction('photos', 'readwrite');
-                var store = tx.objectStore('photos');
-                store.clear();
-                tx.oncomplete = function() {
-                    var tx2 = db.transaction('photos', 'readwrite');
-                    var store2 = tx2.objectStore('photos');
-                    orderedPhotos.forEach(function(p) {
-                        store2.add({ src: p.src, date: p.date || Date.now() });
-                    });
-                    tx2.oncomplete = function() { if (cb) cb(); };
-                };
-            });
+            var order = orderedPhotos.map(function(p){return p.id});
+            fetch('/api/gallery/reorder', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({order: order})
+            }).then(function(r){return r.json()}).then(function(){if(cb)cb()}).catch(function(){showToast('Erro ao reordenar.')});
         }
 
         var dragSrcEl = null;
@@ -565,7 +704,7 @@
                     item.draggable = true;
                     item.dataset.idx = idx;
                     item.innerHTML = '<img src="' + photo.src + '" style="width:100%;height:100%;object-fit:cover;pointer-events:none">' +
-                        '<button onclick="event.stopPropagation();removeGalleryPhoto(' + photo.id + ')" style="position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;background:#e74c3c;color:#fff;border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;z-index:2">✕</button>' +
+                        '<button onclick="event.stopPropagation();removeGalleryPhoto(\'' + photo.id + '\')" style="position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;background:#e74c3c;color:#fff;border:none;cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;z-index:2">✕</button>' +
                         '<div style="position:absolute;bottom:5px;left:5px;background:rgba(0,0,0,.5);color:#fff;border-radius:6px;padding:2px 7px;font-size:.65rem;pointer-events:none">☰ Arraste</div>';
 
                     item.addEventListener('dragstart', function(e) {
@@ -643,6 +782,109 @@
                 }
             }
         });
+
+        // ===== PEDIDOS / ARTES =====
+        var ordersDB, ordersFilter='todos';
+        function openOrdersDB(cb){
+            if(ordersDB){cb(ordersDB);return}
+            var req=indexedDB.open('ElasOrdersDB',1);
+            req.onupgradeneeded=function(e){
+                var db=e.target.result;
+                if(!db.objectStoreNames.contains('orders'))db.createObjectStore('orders',{keyPath:'id',autoIncrement:true});
+            };
+            req.onsuccess=function(e){ordersDB=e.target.result;cb(ordersDB)};
+            req.onerror=function(){showToast('Erro ao abrir banco de pedidos.')};
+        }
+        function loadOrders(){
+            openOrdersDB(function(db){
+                var tx=db.transaction('orders','readonly');
+                var req=tx.objectStore('orders').getAll();
+                req.onsuccess=function(){
+                    var orders=(req.result||[]).reverse();
+                    renderOrders(orders);
+                };
+            });
+        }
+        function renderOrders(orders){
+            var list=document.getElementById('ordersList');
+            var filtered=ordersFilter==='todos'?orders:orders.filter(function(o){return o.status===ordersFilter});
+            if(!filtered.length){
+                list.innerHTML='<div style="text-align:center;padding:30px;color:#999"><p style="font-size:2rem;margin-bottom:5px">📋</p><p>Nenhum pedido '+(ordersFilter==='todos'?'ainda':'com status "'+ordersFilter+'"')+'.</p></div>';
+                return;
+            }
+            list.innerHTML='';
+            filtered.forEach(function(order){
+                var item=document.createElement('div');
+                item.className='order-item status-'+order.status;
+                var dataFormatada=new Date(order.data).toLocaleString('pt-BR');
+                var previewHtml=order.previewHtml||'';
+                // Remove watermark e shield do preview
+                previewHtml=previewHtml.replace(/<div class="watermark-overlay">[\s\S]*?<\/div><\/div>/g,'');
+                previewHtml=previewHtml.replace(/<div class="shield-overlay"[\s\S]*?<\/div>/g,'');
+                item.innerHTML=
+                    '<div class="order-header">'+
+                    '<div><span class="order-produto">'+order.produto+'</span><br><span class="order-data">'+dataFormatada+'</span></div>'+
+                    '<span class="order-status '+order.status+'">'+order.status+'</span></div>'+
+                    '<div class="order-detalhes">'+order.detalhes.replace(/\n/g,'<br>')+'</div>'+
+                    '<div class="order-actions">'+
+                    (previewHtml?'<button class="obtn-view" onclick="viewArt('+order.id+')">Ver Arte</button>':'')+
+                    '<button class="obtn-confirm" onclick="setOrderStatus('+order.id+',\'Confirmado\')">Confirmado</button>'+
+                    '<button class="obtn-pending" onclick="setOrderStatus('+order.id+',\'Pendente\')">Pendente</button>'+
+                    '<button class="obtn-discard" onclick="setOrderStatus('+order.id+',\'Descartado\')">Descartar</button>'+
+                    '<button class="obtn-delete" onclick="deleteOrder('+order.id+')">Excluir</button>'+
+                    '</div>';
+                list.appendChild(item);
+            });
+        }
+        function setOrderStatus(id, status){
+            openOrdersDB(function(db){
+                var tx=db.transaction('orders','readwrite');
+                var store=tx.objectStore('orders');
+                var req=store.get(id);
+                req.onsuccess=function(){
+                    var order=req.result;
+                    if(order){order.status=status;store.put(order)}
+                };
+                tx.oncomplete=function(){loadOrders();showToast('Status atualizado: '+status)};
+            });
+        }
+        function deleteOrder(id){
+            if(!confirm('Excluir este pedido permanentemente?'))return;
+            openOrdersDB(function(db){
+                var tx=db.transaction('orders','readwrite');
+                tx.objectStore('orders').delete(id);
+                tx.oncomplete=function(){loadOrders();showToast('Pedido excluído.')};
+            });
+        }
+        function filterOrders(f){
+            ordersFilter=f;
+            document.querySelectorAll('#filtroTodos,#filtroPendente,#filtroConfirmado,#filtroDescartado').forEach(function(b){b.style.opacity='.5'});
+            var btn=f==='todos'?'filtroTodos':f==='Pendente'?'filtroPendente':f==='Confirmado'?'filtroConfirmado':'filtroDescartado';
+            document.getElementById(btn).style.opacity='1';
+            loadOrders();
+        }
+
+        function viewArt(id){
+            openOrdersDB(function(db){
+                var tx=db.transaction('orders','readonly');
+                var req=tx.objectStore('orders').get(id);
+                req.onsuccess=function(){
+                    var order=req.result;
+                    if(!order||!order.previewHtml)return;
+                    var html=order.previewHtml;
+                    html=html.replace(/<div class="watermark-overlay">[\s\S]*?<\/div><\/div>/g,'');
+                    html=html.replace(/<div class="shield-overlay"[\s\S]*?<\/div>/g,'');
+                    document.getElementById('artModalTitle').textContent=order.produto;
+                    document.getElementById('artModalBody').innerHTML=html;
+                    document.getElementById('artModal').classList.add('active');
+                };
+            });
+        }
+        function closeArtModal(){
+            document.getElementById('artModal').classList.remove('active');
+            document.getElementById('artModalBody').innerHTML='';
+        }
+        document.getElementById('artModal').addEventListener('click',function(e){if(e.target===this)closeArtModal()});
 
         checkAuth();
     </script>
