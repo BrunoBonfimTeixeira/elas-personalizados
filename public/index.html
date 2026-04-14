@@ -1210,7 +1210,7 @@
     // ===== GALLERY (Server API) =====
     var galleryPhotos=[],lbIdx=0;
     function loadGallery(){
-        fetch('/api/gallery').then(function(r){return r.json()}).then(function(photos){
+        fetch('gallery.json').then(function(r){return r.json()}).then(function(photos){
             galleryPhotos=photos||[];
             var track=document.getElementById('galleryTrack');
             if(!galleryPhotos.length){track.innerHTML='<p class="gallery-empty">Em breve, fotos dos nossos trabalhos!</p>';return}

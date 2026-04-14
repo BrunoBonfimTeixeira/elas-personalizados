@@ -628,7 +628,7 @@
 
         // ===== GALLERY (Server API) =====
         function getAllPhotos(cb) {
-            fetch('/api/gallery').then(function(r){return r.json()}).then(cb).catch(function(){cb([])});
+            fetch('gallery.json').then(function(r){return r.json()}).then(cb).catch(function(){cb([])});
         }
 
         function handleGalleryUpload(input) {
